@@ -107,7 +107,7 @@ public class TestSicredSteps {
 
 	@Then("^Will show a message after delete \"(.*)\"$")
 	public void willShowAMessageAfterDelete(String message) throws Throwable {
-	    bootstrapThemePage.hasCustomerDeletedMessage(message);
+	   assertTrue("The message was not show",bootstrapThemePage.hasCustomerDeletedMessage(message));
 	}
 	
 	@After(order = 1)
