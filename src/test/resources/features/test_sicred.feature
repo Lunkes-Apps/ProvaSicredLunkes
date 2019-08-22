@@ -28,6 +28,8 @@ Feature: CRUD of customer list
 		When I click in Go back to list
 		And I search the name "Teste Sicredi"
 		And I select all itens 
-		And I click 
-		Then Will show a message "Your data has been successfully deleted from the database."
+		And I click delete
+		Then Will show a message to confirm delete
+		When I click delete from popup 
+		Then Will show a message after delete "Your data has been successfully deleted from the database."
   

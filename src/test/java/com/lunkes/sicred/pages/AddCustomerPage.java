@@ -65,9 +65,6 @@ public class AddCustomerPage {
 	@FindBy(how = How.ID, using = "form-button-save")
 	private WebElement saveButton;
 
-	@FindBy(how = How.XPATH, using = "//a[@href='/demo/bootstrap_theme_v4/']")
-	private WebElement goBackToList;
-
 	public void fillOutInfo(List<String> info) {
 		nameField.sendKeys(info.get(0));
 		lastNameField.sendKeys(info.get(1));
@@ -99,6 +96,13 @@ public class AddCustomerPage {
 				.visibilityOfElementLocated(By.xpath("//p[contains(text(),'Your data has been successfully stored into the database.')]")));
 		
 		return message != null ? true : false;
+	}
+	
+	public void clickGoBackToList() {
+		WebElement goBackToList = wait.until(ExpectedConditions
+				.visibilityOfElementLocated(By.xpath("//a[@href='/demo/bootstrap_theme_v4/']")));
+		
+		goBackToList.click();
 	}
 
 }
