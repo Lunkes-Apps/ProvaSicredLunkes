@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BootstrapThemePage {
@@ -43,6 +44,9 @@ public class BootstrapThemePage {
 	
 	@FindBy(how = How.CLASS_NAME, using = "container-fluid") 
 	private WebElement container;
+	
+	@FindBy(how = How.CLASS_NAME, using = "delete-multiple-confirmation-button") 
+	private WebElement deleteButtonConfirm;
 		
 	public void accessPage() {
 		driver.get("https://www.grocerycrud.com/demo/bootstrap_theme");
@@ -110,17 +114,34 @@ public class BootstrapThemePage {
 	public boolean waitMessageToConfirmDelete() {
 		int numberOfCustomers = driver.findElements(By.className("table-warning")).size();
 		String message = new String();
+		String className = "alert-delete-multiple";
 		
 		if(numberOfCustomers == 1) {
 			message = "Are you sure that you want to delete this 1 item?";
+			className = "alert-delete-multiple-one";
 		}else {
 			message = "Are you sure that you want to delete those "+ String.valueOf(numberOfCustomers) +" items?";
 		}
 		
+		WebElement popup = wait.until(ExpectedConditions
+				.visibilityOfElementLocated(By.className(className)));
 		
 		
+		return popup.getText().equals(message);	
 		
 	}
 	
+	public void clickDeleteButtonConfirm() {
+		deleteButtonConfirm.click();
+	}
+	
+	public boolean hasCustomerDeletedMessage(String message) {
+		
+		WebElement popup = wait.until(ExpectedConditions
+				.visibilityOfElementLocated(By.xpath("//p[contains(text(),'"+ message +"')]")));
+		
+		return popup != null ? true : false;	
+		
+	}
 
 }

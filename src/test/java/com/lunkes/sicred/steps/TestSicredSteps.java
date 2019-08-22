@@ -31,7 +31,7 @@ public class TestSicredSteps {
 	
 	@Before (order = 0)
 	public void setUp(){ 
-		
+		//System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
 		driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();	
@@ -97,25 +97,26 @@ public class TestSicredSteps {
 
 	@Then("^Will show a message to confirm delete$")
 	public void willShowAMessageToConfirmDelete() throws Throwable {
-	   
+	   assertTrue("The message was not show", bootstrapThemePage.waitMessageToConfirmDelete());
 	}
 
 	@When("^I click delete from popup$")
 	public void iClickDeleteFromPopup() throws Throwable {
-	    
+	    bootstrapThemePage.clickDeleteButtonConfirm();
 	}
 
-	@Then("^Will show a message after delete \"([^\"]*)\"$")
-	public void willShowAMessageAfterDelete(String arg1) throws Throwable {
-	    
+	@Then("^Will show a message after delete \"(.*)\"$")
+	public void willShowAMessageAfterDelete(String message) throws Throwable {
+	    bootstrapThemePage.hasCustomerDeletedMessage(message);
 	}
 	
 	@After(order = 1)
-	public void screenshot(Scenario scenario) {		
+	public void screenshot(Scenario scenario) {	
+		String fileName = scenario.getName().replace(" ", "_");
 		
 		File file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 		try {			
-			FileUtils.copyFile(file,new File("target\\screenshots\\"+scenario.getName()+".png"));
+			FileUtils.copyFile(file,new File("target\\screenshots\\"+fileName+".png"));
 			System.out.print("Tirando Screenshot " + scenario.getId() + file.toPath());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -126,7 +127,7 @@ public class TestSicredSteps {
 	@After(order = 0)
 	public void tearDown() {
 		
-//		driver.quit();
+		driver.quit();
 	}
 	
 	
